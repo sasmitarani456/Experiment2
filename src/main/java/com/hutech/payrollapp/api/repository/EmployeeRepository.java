@@ -1,0 +1,25 @@
+package com.hutech.payrollapp.api.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.hutech.payrollapp.api.model.Employee;
+
+@Repository
+public interface EmployeeRepository extends CrudRepository<Employee, String> {
+
+	Employee findByEmpEmail(String empEmail);
+
+	Employee findByEmpId(String empId);
+
+	Employee findByResetPassword(String token);
+	
+	@Query("SELECT t FROM Employee t WHERE t.verificationToken = ?1")
+	Employee findByVerificationToken(String verificationToken);
+
+	//void save(Optional<Employee> emp);
+
+}
