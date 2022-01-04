@@ -1,6 +1,7 @@
 package com.hutech.payrollapp.api.serviceImpl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import com.hutech.payrollapp.api.exceptionhandler.EmailAlreadyExistException;
 import com.hutech.payrollapp.api.exceptionhandler.EmployeeNotFoundException;
 import com.hutech.payrollapp.api.model.Employee;
@@ -25,7 +27,16 @@ import com.hutech.payrollapp.api.repository.EmployeeRepository;
 import com.hutech.payrollapp.api.service.EmployeeService;
 
 import net.bytebuddy.utility.RandomString;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 @Service
 public class EmployeeServiceImpl implements EmployeeService, UserDetailsService {
 
@@ -85,26 +96,28 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
 	}
 
 	public void updateResetPassword(String token, String username) throws EmployeeNotFoundException {
-		Employee emp = employeeRepo.findByEmpEmail(username);
+		List<Employee> emp = (List<Employee>) employeeRepo.findByEmpEmail(username);
 		if (emp != null) {
-			emp.setResetPassword(token);
-			;
-			employeeRepo.save(emp);
+			((Employee) emp).setResetPassword(token);
+			
+			employeeRepo.saveAll(emp);
 		} else {
 			throw new EmployeeNotFoundException("Could Not Find Any Employee with Username" + username);
 		}
 	}
 
-	public Employee getByResetPassword(String token) {
+	public List<Employee> getByResetPassword(String token) {
 		return employeeRepo.findByResetPassword(token);
 	}
 
-	public void updatePassword(Employee employee, String newPassword) {
+	public void updatePassword(List<Employee> employee, String newPassword) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(newPassword);
-		employee.setPassword(encodedPassword);
-		employee.setResetPassword(encodedPassword);
-		employeeRepo.save(employee);
+		for(Employee emp:employee) {
+			emp.setPassword(encodedPassword);
+		emp.setResetPassword(encodedPassword);}
+		
+		employeeRepo.saveAll(employee);
 	}
 
 	public boolean verifyEmp(String verificationToken) {
@@ -135,43 +148,55 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
 		return "save";
 	}
 
+  
+	@Override
+	public void saveA(MultipartFile file) throws MessagingException, EmailAlreadyExistException {
+		try {
+			List<Employee> employees = CSVhelper.csvToTutorials(file.getInputStream());
+			
+			
+			employeeRepo.saveAll(employees);
+			
+			for (Employee emp : employees) {
+
+				String randomCode = RandomString.make(64);
+				System.out.println(randomCode);
+				emp.setVerificationToken(randomCode);
+				emp.setEnabled(false);
+				// employeeRepo.save(emp);
+				MimeMessage message = javaMailSender.createMimeMessage();
+				MimeMessageHelper helper = new MimeMessageHelper(message);
+				employeeRepo.save(emp);
+				helper.setTo(emp.getEmpEmail());
+				helper.setSubject("PeopleCentral Onboarding Verification");
+				String content = "<center><h1>Welcome to PeopleCentral</h1>" + "<h3> Dear, " + emp.getEmpFirstName()
+						+ "</h3>" + "<h4>Please click the link below to Activate your account</h4></center>"
+						+ "<center>" + "http://localhost:8080/application/verifyEmployee?verificationToken="
+						+ emp.getVerificationToken() + "</center>";
+
+				message.setContent(content, "text/html; charset=utf-8");
+				javaMailSender.send(message);
+			}
+			//helper.setTo(employees.getEmpEmail());
+			
+			//return "Employee Info Saved";
+			
+		} catch (IOException e) {
+			throw new RuntimeException("fail to store csv data: " + e.getMessage());
+		}
+	}
+	
+	public ByteArrayInputStream load() {
+	    List<Employee> tutorials =  (List<Employee>) employeeRepo.findAll();
+
+	    ByteArrayInputStream in = CSVhelper.tutorialsToCSV(tutorials);
+	    return in;
+	  }
+
+	@Override
+	public List<Employee> getAllcsv() {
+		return (List<Employee>) employeeRepo.findAll();
+	}
+	
 }
 
-/*
- * @Override public String save(MultipartFile image, MultipartFile resume,
- * Employee employee) throws IOException, EmailAlreadyExistException,
- * MessagingException { Employee onboardEmployee = new
- * Employee(employee.getEmpId(), employee.getEmpFirstName(),
- * employee.getEmpLastName(), employee.getPassword(),
- * employee.getResetPassword(), employee.getPhnoeNumber(), employee.getGender(),
- * employee.getDateOfBirth(), employee.getAddress1(), employee.getAddress2(),
- * employee.getEmpEmail(), employee.getJoiningDate(),
- * employee.getRelievingDate(), employee.getManagerEmail(),
- * employee.getExperience(), employee.getQualication(),
- * employee.getBankAccountNo(), employee.getIfscCode(), employee.getBankName(),
- * employee.getBranchName(), image.getBytes(), resume.getBytes(),
- * employee.getEmployeement(), employee.getDesignation(), employee.getRoles(),
- * employee.getDepartment());
- * 
- * if (checkIfUserIdExist(employee.getEmpId())) { throw new
- * EmailAlreadyExistException("Employee Id already Exist!. Please check the Id."
- * , 409); } if (checkIfUserExist(employee.getEmpEmail())) { throw new
- * EmailAlreadyExistException("Email Id already registered! Please try a different Email Id."
- * , 409); } String randomCode = RandomString.make(64);
- * System.out.println(randomCode);
- * onboardEmployee.setVerificationToken(randomCode); employee.setEnabled(false);
- * 
- * employeeRepo.save(onboardEmployee); MimeMessage message =
- * javaMailSender.createMimeMessage(); MimeMessageHelper helper = new
- * MimeMessageHelper(message); helper.setTo(employee.getEmpEmail());
- * helper.setSubject("PeopleCentral Onboarding Verification"); String content =
- * "<center><h1>Welcome to PeopleCentral</h1>" + "<h3> Dear, " +
- * employee.getEmpFirstName() + "</h3>" +
- * "<h4>Please click the link below to Activate your account</h4></center>" +
- * "<center>" +
- * "http://localhost:8045/application/verifyEmployee?verificationToken=" +
- * onboardEmployee.getVerificationToken() + "</center>";
- * 
- * message.setContent(content, "text/html; charset=utf-8");
- * javaMailSender.send(message); return "Employee Onboarded"; }
- */

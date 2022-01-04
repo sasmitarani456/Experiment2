@@ -1,0 +1,3 @@
+empId,empFirstName,empLastName,phnoeNumber,gender,dateOfBirth,address1,address2,empEmail,joiningDate,relievingDate,managerEmail,experience,qualification,bankAccountNo,ifscCode,bankName,branchName,employeement,department
+E002,ggggg,Mandal,7000836424,Female,20-12-1997,Berhampur,Berhampur,sasmita.hutech@gmail.com,12-12-2021,22-11-2022,sasmitarani1997@gmail.com,1,MCA,234567876,SBIN09574,SBI,bam,permanent,{departmentName="developer"}
+E001,rita,Mandal,7000836424,Female,20-12-1997,Berhampur,Berhampur,sasmitarani1997@gmail.com,12-12-2021,22-11-2022,sasmitarani1997@gmail.com,1,MCA,234567876,SBIN09574,SBI,bam,permanent,{departmentName="developer"}

@@ -17,7 +17,6 @@ public class Designation {
 	private int designationId;
 	
 	@Id
-	@NotEmpty
 	@Size(min=5,max=25,message="DESIGNATION NAME MUST BE BETWEEN 5 TO 25 CHARACTERS")
 	private String designationName;
 	

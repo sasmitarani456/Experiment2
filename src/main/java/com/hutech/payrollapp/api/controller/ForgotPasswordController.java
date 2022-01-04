@@ -1,6 +1,7 @@
 package com.hutech.payrollapp.api.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -89,7 +90,7 @@ public class ForgotPasswordController {
 		
 		ModelAndView mv1=new ModelAndView();
 		mv1.setViewName("message");;
-		Employee emp = employeeServiceImpl.getByResetPassword(token);
+		List<Employee> emp = employeeServiceImpl.getByResetPassword(token);
 		if (emp == null) {
 			model.addAttribute("title", "reset your password");
 			model.addAttribute("message", "invalid token");
@@ -105,7 +106,7 @@ public class ForgotPasswordController {
 		String token = request.getParameter("token");
 		String password = request.getParameter("password");
 
-		Employee employee = employeeServiceImpl.getByResetPassword(token);
+		List<Employee> employee = employeeServiceImpl.getByResetPassword(token);
 		model.addAttribute("title", "Reset your password");
 
 		if (employee == null) {

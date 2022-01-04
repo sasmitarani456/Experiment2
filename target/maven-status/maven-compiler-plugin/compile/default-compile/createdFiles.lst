@@ -9,6 +9,7 @@ com\hutech\payrollapp\api\model\Project.class
 com\hutech\payrollapp\api\model\BusinessUnit.class
 com\hutech\payrollapp\api\model\PayslipDesign.class
 com\hutech\payrollapp\api\serviceImpl\AdminServiceImpl.class
+com\hutech\payrollapp\api\serviceImpl\Response.class
 com\hutech\payrollapp\api\model\Role.class
 com\hutech\payrollapp\api\controller\BusinessUnitController.class
 com\hutech\payrollapp\api\config\SecurityConfiguration.class
@@ -29,8 +30,11 @@ com\hutech\payrollapp\api\repository\DesignationRepository.class
 com\hutech\payrollapp\api\service\EmployeeService.class
 com\hutech\payrollapp\api\controller\PaySlipController.class
 com\hutech\payrollapp\api\HutechPayrollAppApplication.class
+com\hutech\payrollapp\api\controller\ClientController.class
+com\hutech\payrollapp\api\service\ClientService.class
 com\hutech\payrollapp\api\serviceImpl\EmployeeServiceImpl.class
 com\hutech\payrollapp\api\repository\DepartmentRepository.class
+com\hutech\payrollapp\api\serviceImpl\ClientServiceImpl.class
 com\hutech\payrollapp\api\model\Payslip.class
 com\hutech\payrollapp\api\serviceImpl\SkillServiceImpl.class
 com\hutech\payrollapp\api\service\DesignationService.class
@@ -42,6 +46,7 @@ com\hutech\payrollapp\api\service\ProjectService.class
 com\hutech\payrollapp\api\repository\EmployeementRepository.class
 com\hutech\payrollapp\api\model\Organization.class
 com\hutech\payrollapp\api\service\EmployeementService.class
+com\hutech\payrollapp\api\repository\ClientRepository.class
 com\hutech\payrollapp\api\model\Time.class
 com\hutech\payrollapp\api\repository\CalendarRepository.class
 com\hutech\payrollapp\api\serviceImpl\MailServiceImpl.class
@@ -56,6 +61,7 @@ com\hutech\payrollapp\api\controller\ProjectController.class
 com\hutech\payrollapp\api\service\DepartmentService.class
 com\hutech\payrollapp\api\service\BusinessUnitService.class
 com\hutech\payrollapp\api\repository\OrganizationRepository.class
+com\hutech\payrollapp\api\model\Client.class
 com\hutech\payrollapp\api\serviceImpl\EmailService.class
 com\hutech\payrollapp\api\dto\EmployeeDto.class
 com\hutech\payrollapp\api\controller\CalendarController.class
@@ -75,6 +81,7 @@ com\hutech\payrollapp\api\exceptionhandler\EmployeeNotFoundException.class
 com\hutech\payrollapp\api\repository\AdminRepository.class
 com\hutech\payrollapp\api\serviceImpl\DesignationServiceImpl.class
 com\hutech\payrollapp\api\serviceImpl\TimesheetServiceImpl.class
+com\hutech\payrollapp\api\serviceImpl\CSVhelper.class
 com\hutech\payrollapp\api\model\Calendar.class
 com\hutech\payrollapp\api\exceptionhandler\ExceptionResponse.class
 com\hutech\payrollapp\api\repository\EmployeeRepository.class

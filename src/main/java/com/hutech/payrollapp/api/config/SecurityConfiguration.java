@@ -49,29 +49,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/application**","/registration**","/v2/api-docs","/success","/loginSucess","/addEmployee","/addMultipartfile","/onboardEmployee","/verifyEmployee", "/createPassword", "/reset_password", "/createDesignation",
-						"/findEmpInfo", "/paySlip", "/createBusinessUnit", "/viewBusinessUnit", "/createDepartment",
-						"/createDesignation", "/createEmployeement", "/addOrganizationInfo", "/addProject",
-						"/viewProject", "/createRole", "/addTimesheet", "/verify", "/forgotPasswordEmail",
-						"/emp_forgot_password", "/emp_reset_password", "/addCalendarRegion", "/addHoliday",
-						"/findHolidayList", "/findHolidayByRegion/{calendarRegion}", "/holidayList/{hId}", "/{hId}","/check")
-				.permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
-				.formLogin()
-         		.loginPage("/login")
-         		/*.defaultSuccessUrl("/loginSucess")*/
+		.antMatchers("/application**","/registration**","/v2/api-docs","/success","/loginSucess","/addEmployee","/addMultipartfile","/onboardEmployee","/verifyEmployee", "/createPassword", "/reset_password", "/createDesignation",
+				"/findEmpInfo", "/paySlip", "/createBusinessUnit", "/viewBusinessUnit", "/createDepartment",
+				"/createDesignation", "/createEmployeement", "/addOrganizationInfo", "/addProject",
+				"/viewProject", "/createRole", "/addTimesheet", "/verify", "/forgotPasswordEmail",
+				"/emp_forgot_password", "/emp_reset_password", "/addCalendarRegion", "/addHoliday",
+				"/findHolidayList", "/findHolidayByRegion/{calendarRegion}", "/holidayList/{hId}", "/{hId}","/check")
+		.permitAll()
+		.anyRequest()
+		.authenticated()
+		.and()
+		.formLogin()
+ 		.loginPage("/login")
+ 		/*.defaultSuccessUrl("/loginSucess")*/
 /*         		.loginPage("/adminlogin")
-         		.defaultSuccessUrl("/success")*/
-				.permitAll()
-				.and()
-				.logout()
-				.invalidateHttpSession(true)
-				.clearAuthentication(true)
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/adminlogin?logout")
-				.permitAll().and().rememberMe().key("Abcd01234");
-		http.csrf().disable();
-		}	
+ 		.defaultSuccessUrl("/success")*/
+		.permitAll()
+		.and()
+		.logout()
+		.invalidateHttpSession(true)
+		.clearAuthentication(true)
+		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		.logoutSuccessUrl("/adminlogin?logout")
+		.permitAll().and().rememberMe().key("Abcd01234");
+http.csrf().disable();
+}	
 }

@@ -22,6 +22,12 @@ public interface EmployeeService {
 
 	String addFile(MultipartFile image, MultipartFile resume, Employee employee) throws IOException;
 
+	//void saveA(MultipartFile file);
+
+	List<Employee> getAllcsv();
+	//public void saveCSV() throws IOException;
+
+	void saveA(MultipartFile file) throws MessagingException, EmailAlreadyExistException;
 
 }
 
